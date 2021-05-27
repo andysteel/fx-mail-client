@@ -1,13 +1,8 @@
 package com.gmail.andersoninfonet.fxclientemail;
 
+import com.gmail.andersoninfonet.fxclientemail.view.ViewFactory;
+
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class FXApp extends Application  {
@@ -20,11 +15,8 @@ public class FXApp extends Application  {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		Parent parent  = FXMLLoader.load(getClass().getResource("view/LoginWindow.fxml"));
-		
-		var scene = new  Scene(parent);
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		 var  viewFactory = new ViewFactory(new EmailManager());
+	     viewFactory.showLoginWindow();
 	}
 
 }
