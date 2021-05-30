@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.gmail.andersoninfonet.fxclientemail.EmailManager;
 import com.gmail.andersoninfonet.fxclientemail.controller.BaseController;
 import com.gmail.andersoninfonet.fxclientemail.controller.LoginWindowController;
+import com.gmail.andersoninfonet.fxclientemail.controller.MainWindowController;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,7 +22,12 @@ public class ViewFactory {
     
     public void showLoginWindow() {
         BaseController controller = new LoginWindowController(emailManager, this, "LoginWindow.fxml");
-        initializeStage(controller);
+        this.initializeStage(controller);
+    }
+    
+    public void showMainWindow() {
+    	BaseController controller = new MainWindowController(emailManager, this, "MainWindow.fxml");
+    	this.initializeStage(controller);
     }
     
     private void initializeStage(BaseController baseController){
@@ -38,5 +44,9 @@ public class ViewFactory {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
+    }
+    
+    public void closeStage(Stage stageToClose) {
+    	stageToClose.close();
     }
 }
