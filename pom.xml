@@ -17,6 +17,7 @@
 	</properties>
 
 	<dependencies>
+		<!-- JavaFX - 11 -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-base</artifactId>
@@ -52,6 +53,17 @@
 			<artifactId>javafx-fxml</artifactId>
 			<version>${javafx.version}</version>
 			<classifier>linux</classifier>
+		</dependency>
+		<!-- JavaMail -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>mailapi</artifactId>
+			<version>1.6.7</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 	</dependencies>
 
