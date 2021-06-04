@@ -11,7 +11,10 @@ import com.gmail.andersoninfonet.fxclientemail.EmailManager;
 import com.gmail.andersoninfonet.fxclientemail.model.EmailAccount;
 import com.gmail.andersoninfonet.fxclientemail.model.enums.EmailLoginResult;
 
-public class LoginService {
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+
+public class LoginService extends Service<EmailLoginResult> {
 
 	private EmailAccount emailAccount;
 	private EmailManager emailManager;
@@ -22,7 +25,7 @@ public class LoginService {
 		this.emailManager = emailManager;
 	}
 	
-	public EmailLoginResult login() {
+	private EmailLoginResult login() {
 		Authenticator authenticator = new Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -36,24 +39,31 @@ public class LoginService {
 			store.connect(emailAccount.getProperties().getProperty("incomingHost"), emailAccount.getAddress(), emailAccount.getPassword());
 		}  catch(MessagingException ex) {
 			ex.printStackTrace();
-			if(ex.getCause() instanceof AuthenticationFailedException) {
+			if(ex instanceof AuthenticationFailedException) {
 				return EmailLoginResult.FAILED_BY_CREDENTIALS;
 			}
-			if(ex.getCause() instanceof NoSuchProviderException) {
+			if(ex instanceof NoSuchProviderException) {
 				return EmailLoginResult.FAILED_BY_NETWORK;
 			}
 			return EmailLoginResult.FAILED_BY_UNEXPECTED_ERROR;
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			if(ex.getCause() instanceof AuthenticationFailedException) {
-				return EmailLoginResult.FAILED_BY_CREDENTIALS;
-			}
-			if(ex.getCause() instanceof NoSuchProviderException) {
-				return EmailLoginResult.FAILED_BY_NETWORK;
-			}
 			return EmailLoginResult.FAILED_BY_UNEXPECTED_ERROR;
 		}
 		return EmailLoginResult.SUCCESS;
+	}
+
+	//using multithreading to not blocking the view
+	@Override
+	protected Task<EmailLoginResult> createTask() {
+		
+		return new Task<EmailLoginResult>() {
+			@Override
+			protected EmailLoginResult call() throws Exception {
+				
+				return login();
+			}
+		};
 	}
 
 }

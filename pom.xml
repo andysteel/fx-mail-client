@@ -57,8 +57,8 @@
 		<!-- JavaMail -->
 		<dependency>
 			<groupId>com.sun.mail</groupId>
-			<artifactId>mailapi</artifactId>
-			<version>1.6.7</version>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.activation</groupId>

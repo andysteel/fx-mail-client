@@ -31,27 +31,31 @@ public class LoginWindowController extends BaseController {
     void loginAction(ActionEvent event) {
     	if(fieldsAreValid()) {
     		var emailAcount = new EmailAccount(emailAddressField.getText(), passwordField.getText());
-    		var result = new LoginService(emailAcount, emailManager).login();
-    		switch (result) {
-			case SUCCESS:
-    			this.viewFactory.showMainWindow();
-    			
-    	    	//Workaround to close the actual Stage
-    	    	var stage =  (Stage) this.errorLabel.getScene().getWindow();
-    	    	this.viewFactory.closeStage(stage);
-				break;
-			case FAILED_BY_NETWORK:
-				errorLabel.setText("No Provider Found");
-				break;
-			case FAILED_BY_CREDENTIALS:
-				errorLabel.setText("Address or Password are invalid.");
-				break;
-			case FAILED_BY_UNEXPECTED_ERROR:
-				errorLabel.setText("Internal Error Ocurred.");
-				break;
-			default:
-				break;
-			}
+    		var loginservice = new LoginService(emailAcount, emailManager);
+    		loginservice.start();
+    		loginservice.setOnSucceeded( evnt -> {
+        		var result = loginservice.getValue();
+        		switch (result) {
+    			case SUCCESS:
+        			this.viewFactory.showMainWindow();
+        			
+        	    	//Workaround to close the actual Stage
+        	    	var stage =  (Stage) this.errorLabel.getScene().getWindow();
+        	    	this.viewFactory.closeStage(stage);
+    				return;
+    			case FAILED_BY_NETWORK:
+    				errorLabel.setText("No Provider Found");
+    				return;
+    			case FAILED_BY_CREDENTIALS:
+    				errorLabel.setText("Address or Password are invalid.");
+    				return;
+    			case FAILED_BY_UNEXPECTED_ERROR:
+    				errorLabel.setText("Internal Error Ocurred.");
+    				return;
+    			default:
+    				return;
+    			}
+    		});
     	}
     	
     }

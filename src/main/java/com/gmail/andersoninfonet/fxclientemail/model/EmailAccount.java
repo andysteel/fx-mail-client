@@ -17,13 +17,10 @@ public class EmailAccount {
 		this.password = password;
 		properties = new Properties();
 		properties.put("incomingHost", "imap.gmail.com");
-		properties.put("mail.store.protocol", "gimaps");
-		properties.put("mail.imap.port", "993");
-		properties.put("mail.imap.starttls.enable", "true");
-		properties.put("mail.imap.ssl.trust", "imap.gmail.com");
-		properties.put("mail.transport.protocol", "smtp");
-		properties.put("mail.smtp.host", "smtp.gmail.com");
-		properties.put("mail.smtp.auth", "true");
+		properties.put("mail.store.protocol", "imaps");
+		properties.put("mail.transport.protocol", "smtps");
+		properties.put("mail.smtps.host", "smtp.gmail.com");
+		properties.put("mail.smtps.auth", "true");
 		properties.put("outgoingHost", "smtp.gmail.com");
 	}
 
