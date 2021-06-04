@@ -37,6 +37,8 @@ public class LoginService extends Service<EmailLoginResult> {
 			var session = Session.getInstance(emailAccount.getProperties(), authenticator);
 			var store = session.getStore("imaps");
 			store.connect(emailAccount.getProperties().getProperty("incomingHost"), emailAccount.getAddress(), emailAccount.getPassword());
+			emailAccount.setStore(store);
+			this.emailManager.emailAccount(emailAccount);
 		}  catch(MessagingException ex) {
 			ex.printStackTrace();
 			if(ex instanceof AuthenticationFailedException) {

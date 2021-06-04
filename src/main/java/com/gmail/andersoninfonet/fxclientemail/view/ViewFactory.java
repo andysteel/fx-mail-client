@@ -23,6 +23,7 @@ public class ViewFactory {
 	private ColorTheme colorTheme = ColorTheme.DEFAULT;
 	private FontSize fontSize = FontSize.MEDIUM;
 	private Set<Stage> activeStages;
+	private boolean mainWindowInitialize = false;
 	
     public ViewFactory(EmailManager emailManager) {
         this.emailManager = emailManager;
@@ -37,6 +38,7 @@ public class ViewFactory {
     public void showMainWindow() {
     	BaseController controller = new MainWindowController(emailManager, this, "MainWindow.fxml");
     	this.initializeStage(controller, "Main");
+    	this.mainWindowInitialize = true;
     }
     
     public void showOptionWindow() {
@@ -83,6 +85,10 @@ public class ViewFactory {
 		this.fontSize = fontSize;
 	}
 
+	public boolean isMainWindowInitialize() {
+		return mainWindowInitialize;
+	}
+	
 	public void updateStyles() {
 		this.activeStages.forEach(stage -> {			
 				var scene = stage.getScene();

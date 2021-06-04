@@ -37,7 +37,9 @@ public class LoginWindowController extends BaseController {
         		var result = loginservice.getValue();
         		switch (result) {
     			case SUCCESS:
-        			this.viewFactory.showMainWindow();
+    				if(!this.viewFactory.isMainWindowInitialize()) {
+    					this.viewFactory.showMainWindow();
+    				}
         			
         	    	//Workaround to close the actual Stage
         	    	var stage =  (Stage) this.errorLabel.getScene().getWindow();
