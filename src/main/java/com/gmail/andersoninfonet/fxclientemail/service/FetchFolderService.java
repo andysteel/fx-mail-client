@@ -1,7 +1,5 @@
 package com.gmail.andersoninfonet.fxclientemail.service;
 
-import java.util.Arrays;
-
 import javax.mail.Folder;
 import javax.mail.MessagingException;
 import javax.mail.Store;
@@ -39,26 +37,43 @@ public class FetchFolderService extends Service<Void> {
 		handleFolders(folders, foldersRoot);
 	}
 
-	private void handleFolders(Folder[] folders, EmailTreeItem<String> foldersRoot)  {
-		Arrays.stream(folders)
-					.forEach(f -> {
-						EmailTreeItem<String> treeItem = new EmailTreeItem<>(f.getName());
-						foldersRoot.getChildren().add((treeItem));
-							try {
-								fetchMessageOnFolder(f, treeItem);
-								if(f.getType() == Folder.HOLDS_FOLDERS) {
-									handleFolders(f.list(), treeItem);
-								}
-							} catch (MessagingException e) {
-								e.printStackTrace();
-								throw new RuntimeException(e);
-							}
-					});		
-	}
+    private void handleFolders(Folder[] folders, EmailTreeItem<String> foldersRoot) throws MessagingException {
+        for(Folder folder: folders){
+            //folderList.add(folder);
+            EmailTreeItem<String> emailTreeItem = new EmailTreeItem<String>(folder.getName());
+            //emailTreeItem.setGraphic(iconResolver.getIconForFolder(folder.getName()));
+            foldersRoot.getChildren().add((emailTreeItem));
+            foldersRoot.setExpanded(true);
+            fetchMessagesOnFolder(folder, emailTreeItem);
+            //addMessageListenerToFolder(folder, emailTreeItem);
+            if(folder.getType() == Folder.HOLDS_FOLDERS) {
+                Folder[] subFolders =  folder.list();
+                handleFolders(subFolders, emailTreeItem);
+            }
+        }
 
-	private void fetchMessageOnFolder(Folder f, EmailTreeItem<String> treeItem) {
-		//TODO
-		
+    }
+
+	private void fetchMessagesOnFolder(Folder f, EmailTreeItem<String> treeItem) {
+		Service fetchMessageService = new Service() {
+			@Override
+			protected Task createTask() {
+				return new Task() {
+					@Override
+					protected Object call() throws Exception {
+						if(f.getType() != Folder.HOLDS_FOLDERS) {
+							f.open(Folder.READ_WRITE);
+							int folderSize = f.getMessageCount();
+							for(int i = folderSize; i > 0; i--) {
+								treeItem.addEmail(f.getMessage(i));
+							}
+						}
+						return null;
+					}
+				};
+			}
+		};
+		fetchMessageService.start();
 	}
 
 }
