@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 import com.gmail.andersoninfonet.fxclientemail.EmailManager;
 import com.gmail.andersoninfonet.fxclientemail.model.EmailMessage;
 import com.gmail.andersoninfonet.fxclientemail.model.EmailTreeItem;
+import com.gmail.andersoninfonet.fxclientemail.model.SizeInteger;
+import com.gmail.andersoninfonet.fxclientemail.service.MessageRendererService;
 import com.gmail.andersoninfonet.fxclientemail.view.ViewFactory;
 
 import javafx.event.ActionEvent;
@@ -38,13 +40,15 @@ public class MainWindowController extends BaseController implements Initializabl
     private TableColumn<EmailMessage, String> recipientCol;
 
     @FXML
-    private TableColumn<EmailMessage, Integer> sizeCol;
+    private TableColumn<EmailMessage, SizeInteger> sizeCol;
 
     @FXML
     private TableColumn<EmailMessage, Date> dateCol;
 
     @FXML
     private WebView emailWebView;
+    
+    private MessageRendererService rendererService;
     
     public MainWindowController(EmailManager emailManager, ViewFactory viewFactory, String fxmlName) {
 		super(emailManager, viewFactory, fxmlName);
@@ -61,6 +65,23 @@ public class MainWindowController extends BaseController implements Initializabl
 		setUpEmailTableView();
 		setUpFolderSelection();
 		setUpBoldRows();
+		setUpMessageRendererService();
+		setUpMessageSelection();
+	}
+
+	private void setUpMessageSelection() {
+		emailsTableView.setOnMouseClicked(event -> {
+			EmailMessage emailMessage = emailsTableView.getSelectionModel().getSelectedItem();
+			if(emailMessage != null) {
+				this.rendererService.setEmailMessage(emailMessage);
+				this.rendererService.restart();
+			}
+		});
+		
+	}
+
+	private void setUpMessageRendererService() {
+		this.rendererService = new MessageRendererService(this.emailWebView.getEngine());
 	}
 
 	private void setUpBoldRows() {
@@ -92,7 +113,7 @@ public class MainWindowController extends BaseController implements Initializabl
 		senderCol.setCellValueFactory((new PropertyValueFactory<EmailMessage, String>("sender")));
 		subjectCol.setCellValueFactory((new PropertyValueFactory<EmailMessage, String>("subject")));
 		recipientCol.setCellValueFactory((new PropertyValueFactory<EmailMessage, String>("recipient")));
-		sizeCol.setCellValueFactory((new PropertyValueFactory<EmailMessage, Integer>("size")));
+		sizeCol.setCellValueFactory((new PropertyValueFactory<EmailMessage, SizeInteger>("size")));
 		dateCol.setCellValueFactory((new PropertyValueFactory<EmailMessage, Date>("date")));
 	}
 

@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.mail.Message;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -13,7 +12,7 @@ public class EmailMessage {
 	private SimpleStringProperty subject;
 	private SimpleStringProperty sender;
 	private SimpleStringProperty recipient;
-	private SimpleIntegerProperty size;
+	private SimpleObjectProperty<SizeInteger>  size;
 	private SimpleObjectProperty<Date> date;
 	private boolean isRead;
 	private Message message;
@@ -24,7 +23,7 @@ public class EmailMessage {
 		this.subject = new SimpleStringProperty(subject);
 		this.sender = new SimpleStringProperty(sender);
 		this.recipient = new SimpleStringProperty(recipient);
-		this.size = new SimpleIntegerProperty(size);
+		this.size = new SimpleObjectProperty<SizeInteger>(new SizeInteger(size));
 		this.date = new SimpleObjectProperty<Date>(date);
 		this.isRead = isRead;
 		this.message = message;
@@ -42,7 +41,7 @@ public class EmailMessage {
 		return recipient.get();
 	}
 
-	public Integer getSize() {
+	public SizeInteger getSize() {
 		return size.get();
 	}
 
