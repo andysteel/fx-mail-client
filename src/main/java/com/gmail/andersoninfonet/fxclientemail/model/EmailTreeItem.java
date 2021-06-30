@@ -46,17 +46,17 @@ public class EmailTreeItem<String> extends TreeItem<String> {
 				messageIsRead, message);
 		
 		if(!messageIsRead) {
-			this.incrementMessagesConut();
+			this.incrementMessagesCount();
 		}
 		return emailMessage;
 	}
 	
-	public void incrementMessagesConut() {
+	public void incrementMessagesCount() {
 		unreadMessageCount++;
 		this.updateName();
 	}
 	
-	public void decrementMessagesConut() {
+	public void decrementMessagesCount() {
 		unreadMessageCount--;
 		this.updateName();
 	}
