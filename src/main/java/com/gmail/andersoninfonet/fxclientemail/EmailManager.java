@@ -12,6 +12,9 @@ import com.gmail.andersoninfonet.fxclientemail.model.EmailTreeItem;
 import com.gmail.andersoninfonet.fxclientemail.service.FetchFolderService;
 import com.gmail.andersoninfonet.fxclientemail.service.FolderUpdaterService;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 
 public class EmailManager {
 
@@ -23,12 +26,18 @@ public class EmailManager {
 
 	private EmailMessage selectedMessage;
 
-	private EmailTreeItem<String> selectedFolder; 
+	private EmailTreeItem<String> selectedFolder;
+
+	private ObservableList<EmailAccount> accounts = FXCollections.observableArrayList();
 
 	
 	public EmailManager() {
 		this.folderUpdaterService = new FolderUpdaterService(foldersList);
 		this.folderUpdaterService.start();
+	}
+
+	public ObservableList<EmailAccount> getAccounts() {
+		return accounts;
 	}
 
 	public List<Folder> getFoldersList() {
@@ -68,6 +77,7 @@ public class EmailManager {
 	}
 	
 	public void emailAccount(EmailAccount account) {
+		accounts.add(account);
 		EmailTreeItem<String> treeItem = new EmailTreeItem<>(account.getAddress());
 		var folderService = new FetchFolderService(account.getStore(), treeItem, foldersList);
 		folderService.start();

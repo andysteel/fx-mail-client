@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.gmail.andersoninfonet.fxclientemail.EmailManager;
 import com.gmail.andersoninfonet.fxclientemail.controller.BaseController;
+import com.gmail.andersoninfonet.fxclientemail.controller.ComposeMessageController;
 import com.gmail.andersoninfonet.fxclientemail.controller.LoginWindowController;
 import com.gmail.andersoninfonet.fxclientemail.controller.MainWindowController;
 import com.gmail.andersoninfonet.fxclientemail.controller.OptionWindowController;
@@ -36,14 +37,20 @@ public class ViewFactory {
     }
     
     public void showMainWindow() {
-    	BaseController controller = new MainWindowController(emailManager, this, "MainWindow.fxml");
-    	this.initializeStage(controller, "Main");
-    	this.mainWindowInitialize = true;
+		BaseController controller = new MainWindowController(emailManager, this, "MainWindow.fxml");
+		this.initializeStage(controller, "Main");
+		this.mainWindowInitialize = true;
     }
     
     public void showOptionWindow() {
-    	BaseController controller = new OptionWindowController(emailManager, this, "OptionWindow.fxml");
-    	this.initializeStage(controller, "Option");
+		BaseController controller = new OptionWindowController(emailManager, this, "OptionWindow.fxml");
+		this.initializeStage(controller, "Option");
+    }
+
+
+    public void showComposeMessageWindow() {
+		BaseController controller = new ComposeMessageController(emailManager, this, "ComposeMessageWindow.fxml");
+		this.initializeStage(controller, "Compose message");
     }
     
     private void initializeStage(BaseController baseController, String title){

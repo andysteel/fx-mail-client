@@ -62,7 +62,12 @@ public class MainWindowController extends BaseController implements Initializabl
 
     @FXML
     void optionAction(ActionEvent event) {
-    	this.viewFactory.showOptionWindow();
+		this.viewFactory.showOptionWindow();
+    }
+
+    @FXML
+    void composeMessageAction(ActionEvent event) {
+		this.viewFactory.showComposeMessageWindow();
     }
 
 	@Override

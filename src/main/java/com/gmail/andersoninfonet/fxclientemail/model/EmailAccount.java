@@ -2,6 +2,7 @@ package com.gmail.andersoninfonet.fxclientemail.model;
 
 import java.util.Properties;
 
+import javax.mail.Session;
 import javax.mail.Store;
 
 public class EmailAccount {
@@ -10,6 +11,7 @@ public class EmailAccount {
 	private String password;
 	private Properties properties;
 	private Store store;
+	private Session session;
 	
 	public EmailAccount(String address, String password) {
 		super();
@@ -46,6 +48,23 @@ public class EmailAccount {
 
 	public void setStore(Store store) {
 		this.store = store;
+	}
+
+	public Session getSession() {
+		return session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	
+	@Override
+	public String toString() {
+		return this.address;
 	}
 	
 }
